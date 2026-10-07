@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f8;
+  color: #1f2933;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 1px solid #1d4ed8;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 10px;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 18px;
+}
+
+.toolbar,
+.form-section,
+.table-section,
+.movements {
+  background: #fff;
+  border: 1px solid #d8dee5;
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.search {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px;
+}
+
+.product-form {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.product-form input {
+  min-width: 0;
+  padding: 10px;
+}
+
+.message {
+  background: #e8f7ee;
+  border: 1px solid #86c59d;
+  padding: 10px;
+}
+
+.error {
+  background: #fdecec;
+  border: 1px solid #e09a9a;
+  color: #8a1f1f;
+  padding: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border-bottom: 1px solid #d8dee5;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: #eef2f6;
+}
+
+.low-stock {
+  background: #fff3cd;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.actions button {
+  padding: 6px 8px;
+}
+
+.movements ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+@media (max-width: 900px) {
+  .product-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}

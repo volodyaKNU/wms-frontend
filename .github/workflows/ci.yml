@@ -1,0 +1,74 @@
+name: WMS Frontend CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: wms
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d wms"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout frontend
+        uses: actions/checkout@v4
+        with:
+          path: wms-frontend
+
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/wms-backend
+          path: wms-backend
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend dependencies
+        working-directory: wms-backend
+        run: npm ci
+
+      - name: Create database schema
+        working-directory: wms-backend
+        env:
+          PGPASSWORD: postgres
+        run: psql -h localhost -U postgres -d wms -f infra/schema.sql
+
+      - name: Start backend
+        working-directory: wms-backend
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/wms
+          PORT: 4000
+        run: nohup npm start > backend.log 2>&1 &
+
+      - name: Install frontend dependencies
+        working-directory: wms-frontend
+        run: npm ci
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: wms-frontend
+          install: false
+          start: npm run dev
+          wait-on: 'http://localhost:5173,http://localhost:4000/health'
+          browser: chrome
+        env:
+          VITE_API_URL: http://localhost:4000
+          CYPRESS_apiUrl: http://localhost:4000
