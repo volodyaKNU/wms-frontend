@@ -87,3 +87,31 @@ jobs:
           tags: |
             ${{ steps.image.outputs.name }}:latest
             ${{ steps.image.outputs.name }}:${{ github.sha }}
+
+  deploy:
+    name: Update frontend in Minikube
+    needs: image
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      vars.ENABLE_MINIKUBE_CD == 'true'
+    runs-on: [self-hosted, wms-minikube]
+    environment: minikube
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Set lowercase image name
+        id: image
+        shell: bash
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Update frontend Deployment
+        run: >-
+          kubectl set image deployment/wms-frontend
+          frontend=${{ steps.image.outputs.name }}:${{ github.sha }}
+          --namespace wms
+
+      - name: Verify frontend rollout
+        run: kubectl rollout status deployment/wms-frontend --namespace wms --timeout=180s

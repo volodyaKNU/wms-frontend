@@ -242,20 +242,36 @@ function App() {
                   <td>{product.sku}</td>
                   <td>{product.name}</td>
                   <td>{product.unit}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.min_quantity}</td>
-                  <td>{lowStock ? 'Низький залишок' : 'OK'}</td>
+                  <td data-testid="product-quantity">{product.quantity}</td>
+                  <td data-testid="product-min-quantity">{product.min_quantity}</td>
+                  <td data-testid="product-status">{lowStock ? 'Низький залишок' : 'OK'}</td>
                   <td className="actions">
-                    <button type="button" onClick={() => startEdit(product)}>
+                    <button
+                      data-testid="edit-product"
+                      type="button"
+                      onClick={() => startEdit(product)}
+                    >
                       Редагувати
                     </button>
-                    <button type="button" onClick={() => handleDelete(product)}>
+                    <button
+                      data-testid="delete-product"
+                      type="button"
+                      onClick={() => handleDelete(product)}
+                    >
                       Видалити
                     </button>
-                    <button type="button" onClick={() => handleMovement(product, 'income')}>
+                    <button
+                      data-testid="income-product"
+                      type="button"
+                      onClick={() => handleMovement(product, 'income')}
+                    >
                       Надходження
                     </button>
-                    <button type="button" onClick={() => handleMovement(product, 'writeoff')}>
+                    <button
+                      data-testid="writeoff-product"
+                      type="button"
+                      onClick={() => handleMovement(product, 'writeoff')}
+                    >
                       Списання
                     </button>
                   </td>
@@ -275,7 +291,7 @@ function App() {
         <h2>Історія операцій</h2>
         <ul>
           {movements.slice(0, 10).map((movement) => (
-            <li key={movement.id}>
+            <li data-testid="movement-row" key={movement.id}>
               {movement.created_at}: {movement.type} {movement.quantity} —{' '}
               {movement.sku} {movement.product_name}
             </li>

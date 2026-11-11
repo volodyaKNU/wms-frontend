@@ -29,6 +29,10 @@ npm run cy:run
 
 The GitHub Actions workflow starts PostgreSQL as a service, starts `wms-backend`, starts Vite and runs Cypress tests.
 
+The suite covers product creation, editing, low-stock highlighting, search,
+deletion, income/writeoff operations, movement history, API CRUD, validation,
+and protection against writing off more stock than is available.
+
 ## Docker Compose
 
 Clone `wms-backend` and `wms-frontend` as sibling folders, then run:

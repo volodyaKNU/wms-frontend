@@ -1,6 +1,4 @@
-import { defineConfig } from 'cypress';
-
-export default defineConfig({
+export default {
   e2e: {
     baseUrl: 'http://localhost:5173',
     env: {
@@ -8,4 +6,4 @@ export default defineConfig({
     },
     supportFile: false,
   },
-});
+};
