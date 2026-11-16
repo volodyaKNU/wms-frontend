@@ -10,7 +10,7 @@ permissions:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION || 'eu-north-1' }}
-  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || 'wms-lab' }}
+  EKS_CLUSTER_NAME: ${{ vars.EKS_CLUSTER_NAME || 'wms-eks' }}
   ECR_REPOSITORY: wms-frontend
   K8S_NAMESPACE: wms
 
