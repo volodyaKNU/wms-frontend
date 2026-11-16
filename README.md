@@ -58,3 +58,14 @@ docker compose -f ../wms-backend/infra/docker-compose.yml down -v
 Pull requests build the full three-container stack and run Cypress. A successful
 push to `main` publishes `ghcr.io/volodyaknu/wms-frontend:latest` and an immutable
 image tagged with the commit SHA.
+
+## Continuous deployment to AWS EKS
+
+A push to `main` builds the image, pushes
+`<account>.dkr.ecr.eu-north-1.amazonaws.com/wms-frontend:<commit-sha>` to
+Amazon ECR, and the `deploy-eks` job runs `kubectl set image` and
+`kubectl rollout status` for `deployment/wms-frontend` in the `wms` namespace of
+the `wms-lab` cluster. It then checks the SPA and the `/api` proxy, and runs
+`kubectl rollout undo` on failure. Required GitHub configuration: secrets
+`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and variable `ENABLE_EKS_CD=true`
+(see the backend README for details).
